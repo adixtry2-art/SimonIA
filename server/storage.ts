@@ -6,6 +6,7 @@ export interface IStorage {
   getConversations(): Promise<Conversation[]>;
   getConversation(id: string): Promise<Conversation | undefined>;
   createConversation(conversation: InsertConversation): Promise<Conversation>;
+  updateConversation(id: string, updates: Partial<InsertConversation>): Promise<Conversation | undefined>;
   deleteConversation(id: string): Promise<void>;
   
   // Messages
@@ -43,6 +44,21 @@ export class MemStorage implements IStorage {
     };
     this.conversations.set(id, conversation);
     return conversation;
+  }
+
+  async updateConversation(id: string, updates: Partial<InsertConversation>): Promise<Conversation | undefined> {
+    const existing = this.conversations.get(id);
+    if (!existing) {
+      return undefined;
+    }
+    
+    const updated: Conversation = {
+      ...existing,
+      ...updates,
+      updatedAt: new Date(),
+    };
+    this.conversations.set(id, updated);
+    return updated;
   }
 
   async deleteConversation(id: string): Promise<void> {

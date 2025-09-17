@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowUp } from "lucide-react";
@@ -18,6 +19,7 @@ export default function MessageInput({ conversationId, onFirstMessage }: Message
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [, setLocation] = useLocation();
 
   const createConversationMutation = useMutation({
     mutationFn: async (title: string) => {
@@ -80,7 +82,7 @@ export default function MessageInput({ conversationId, onFirstMessage }: Message
         setCurrentConversationId(targetConversationId);
         
         // Update URL to reflect new conversation
-        window.history.pushState({}, '', `/chat/${targetConversationId}`);
+        setLocation(`/chat/${targetConversationId}`);
         onFirstMessage?.();
       } catch (error) {
         toast({

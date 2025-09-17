@@ -97,12 +97,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       // If this is the first exchange, update conversation title
-      if (previousMessages.length === 0) {
+      // Check length === 1 because previousMessages includes the just-saved user message
+      if (previousMessages.length === 1) {
         try {
           const title = await generateConversationTitle(content);
           // Update the conversation title in storage
-          const updatedConversation = { ...conversation, title };
-          await storage.createConversation({ title }); // This is a limitation of our simple storage
+          await storage.updateConversation(conversationId, { title });
         } catch (titleError) {
           console.error("Error updating conversation title:", titleError);
         }
