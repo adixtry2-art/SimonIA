@@ -43,6 +43,18 @@ export async function generateChatResponse(
     return response.text() || "Mi dispiace, non sono riuscita a rispondere. Puoi riprovare?";
   } catch (error) {
     console.error("Gemini API error:", error);
+    
+    // Handle specific API errors for better user feedback
+    if (error instanceof Error) {
+      if (error.message.includes("503") || error.message.includes("overloaded")) {
+        throw new Error("Il servizio AI è temporaneamente sovraccarico. Riprova tra qualche momento.");
+      } else if (error.message.includes("401") || error.message.includes("401") || error.message.includes("API key")) {
+        throw new Error("Chiave API non valida. Controlla la configurazione.");
+      } else if (error.message.includes("429") || error.message.includes("quota")) {
+        throw new Error("Limite di utilizzo raggiunto. Riprova più tardi.");
+      }
+    }
+    
     throw new Error("Errore nella generazione della risposta. Verifica la connessione e riprova.");
   }
 }

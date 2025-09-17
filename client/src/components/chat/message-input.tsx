@@ -42,10 +42,18 @@ export default function MessageInput({ conversationId, onFirstMessage }: Message
       }
     },
     onError: (error: any) => {
+      console.error("Message send error:", error);
+      
+      // Restore the message in the input for easy retry
+      if (!message.trim()) {
+        setMessage(error.messageContent || "");
+      }
+      
       toast({
-        title: "Errore",
-        description: error.message || "Impossibile inviare il messaggio",
-        variant: "destructive"
+        title: "Messaggio non inviato",
+        description: error.message || "Impossibile inviare il messaggio. Riprova fra qualche momento.",
+        variant: "destructive",
+        duration: 8000, // Show longer for user to read
       });
     }
   });
@@ -101,6 +109,11 @@ export default function MessageInput({ conversationId, onFirstMessage }: Message
     sendMessageMutation.mutate({
       conversationId: targetConversationId!,
       content: trimmedMessage
+    }, {
+      onError: (error: any) => {
+        // Store the message content for potential retry
+        error.messageContent = trimmedMessage;
+      }
     });
   };
 
