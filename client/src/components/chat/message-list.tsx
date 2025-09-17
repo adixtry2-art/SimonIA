@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import type { Message } from "@shared/schema";
-import LoadingDots from "@/components/ui/loading-dots";
+import LoadingDots from "@/components/ui/loading-dots.tsx";
 
 interface MessageListProps {
   messages: Message[];

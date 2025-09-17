@@ -97,7 +97,7 @@ export default function MessageInput({ conversationId, onFirstMessage }: Message
     
     // Send message
     sendMessageMutation.mutate({
-      conversationId: targetConversationId,
+      conversationId: targetConversationId!,
       content: trimmedMessage
     });
   };

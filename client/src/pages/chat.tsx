@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams } from "wouter";
 import Sidebar from "@/components/chat/sidebar";
-import MessageList from "@/components/chat/message-list";
-import MessageInput from "@/components/chat/message-input";
-import WelcomeScreen from "@/components/chat/welcome-screen";
+import MessageList from "@/components/chat/message-list.tsx";
+import MessageInput from "@/components/chat/message-input.tsx";
+import WelcomeScreen from "@/components/chat/welcome-screen.tsx";
 import { useQuery } from "@tanstack/react-query";
 import type { Conversation, Message } from "@shared/schema";
 import { Menu, Plus, Settings } from "lucide-react";

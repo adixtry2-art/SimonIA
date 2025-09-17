@@ -111,7 +111,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ userMessage, aiMessage });
     } catch (error) {
       console.error("Error in message handling:", error);
-      res.status(500).json({ message: error.message || "Errore nel processare il messaggio" });
+      res.status(500).json({ message: error instanceof Error ? error.message : "Errore nel processare il messaggio" });
     }
   });
 
